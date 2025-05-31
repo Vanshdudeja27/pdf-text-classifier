@@ -4,7 +4,7 @@ A Streamlit web app that classifies PDF documents as **Invoice**, **Report**, or
 
 ## 🚀 Try the App
 
-[Click to Open the App](https://pdf-text-classifier.streamlit.app)
+[Click to Open the App](https://pdftextclassifier.streamlit.app/)
 
 > Powered by [Streamlit Cloud](https://streamlit.io/cloud)
 
