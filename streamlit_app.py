@@ -4,20 +4,25 @@ import re
 import nltk
 import joblib
 
+# Import necessary NLTK components for text processing
 from nltk.corpus import stopwords
 from nltk.stem import PorterStemmer, WordNetLemmatizer
 
-
-
-
 # Downloads
+# NLTK will check if the resources are already downloaded before trying to get them again.
 nltk.download('punkt')
 nltk.download('stopwords')
 nltk.download('wordnet')
 
 # Load model and vectorizer
-model = joblib.load("pdf_text_classifier_model.pkl")
-tfidf = joblib.load("tfidf_vectorizer.pkl")
+# It's good practice to wrap this in a try-except block in case the files are missing.
+try:
+    model = joblib.load("pdf_text_classifier_model.pkl")
+    tfidf = joblib.load("tfidf_vectorizer.pkl")
+except FileNotFoundError:
+    st.error("Model files ('pdf_text_classifier_model.pkl' or 'tfidf_vectorizer.pkl') not found. "
+             "Please ensure they are in the same directory as the app.")
+    st.stop() # Stop the app if essential files are missing
 
 # NLP tools
 stop_words = set(stopwords.words('english'))
@@ -26,17 +31,28 @@ lemmatizer = WordNetLemmatizer()
 
 # Preprocessing
 def preprocess(text):
+    """
+    Cleans and preprocesses text for classification.
+    """
     text = text.lower()
     text = re.sub(r'\s+', ' ', text)
     tokens = nltk.word_tokenize(text)
     tokens = [t for t in tokens if t.isalpha() and t not in stop_words]
+    # Apply both stemming and lemmatization
     tokens = [lemmatizer.lemmatize(stemmer.stem(t)) for t in tokens]
     return ' '.join(tokens)
 
 # PDF text extraction
 def extract_text_from_pdf(file):
-    reader = PyPDF2.PdfReader(file)
-    return " ".join([page.extract_text() or "" for page in reader.pages])
+    """
+    Extracts text from a PDF file.
+    """
+    try:
+        reader = PyPDF2.PdfReader(file)
+        return " ".join([page.extract_text() or "" for page in reader.pages])
+    except Exception as e:
+        st.error(f"Failed to read the PDF file: {e}")
+        return ""
 
 # Label map
 label_map = {0: "invoice", 1: "report", 2: "resume"}
