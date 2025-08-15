@@ -7,8 +7,14 @@ import joblib
 from nltk.corpus import stopwords
 from nltk.stem import PorterStemmer, WordNetLemmatizer
 
+# import nltk
+
+try:
+    nltk.data.find('tokenizers/punkt')
+except nltk.downloader.DownloadError:
+    nltk.download('punkt')
 # Downloads
-nltk.download('punkt')
+# nltk.download('punkt')
 nltk.download('stopwords')
 nltk.download('wordnet')
 
