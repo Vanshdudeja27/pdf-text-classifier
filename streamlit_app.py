@@ -7,20 +7,7 @@ import joblib
 from nltk.corpus import stopwords
 from nltk.stem import PorterStemmer, WordNetLemmatizer
 
-# import nltk
-# import streamlit as st
 
-# Check if the 'punkt' tokenizer is available, and download it if not.
-try:
-    nltk.data.find('tokenizers/punkt')
-except nltk.downloader.DownloadError:
-    st.info('Downloading NLTK "punkt" tokenizer data. Please wait...')
-    # nltk.download('punkt')
-    nltk.download('punkt')
-    nltk.download('stopwords')
-    nltk.download('wordnet')
-
-    st.success('NLTK "punkt" data downloaded successfully!')
 
 
 # Downloads
